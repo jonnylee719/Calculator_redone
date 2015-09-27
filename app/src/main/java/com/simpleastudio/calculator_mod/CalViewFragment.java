@@ -20,9 +20,16 @@ public class CalViewFragment extends Fragment{
     private static final String TAG = "CalViewFragment";
     private TextView mPastCalTextView;
     private TextView mCurrentCalTextView;
+    private CalManager mCalManager;
 
     public CalViewFragment(){
 
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        mCalManager = new CalManager();
     }
 
     @Override
@@ -39,7 +46,19 @@ public class CalViewFragment extends Fragment{
                         TextView view = (TextView) v;
                         String buttonText = view.getText().toString();
                         Log.d(TAG, "Number button " + buttonText + " was clicked.");
-                        String text = mCurrentCalTextView.getText().toString() + buttonText;
+                        String text = mCalManager.numButtonClicked(buttonText);
+                        mCurrentCalTextView.setText(text);
+                    }
+                };
+
+        View.OnClickListener operatorButtonListener =
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TextView view = (TextView) v;
+                        String buttonText = view.getText().toString();
+                        Log.d(TAG, "Operator button " + buttonText + " was clicked.");
+                        String text = mCalManager.operButtonClicked(buttonText);
                         mCurrentCalTextView.setText(text);
                     }
                 };
@@ -65,6 +84,7 @@ public class CalViewFragment extends Fragment{
             Button button = (Button) row.getChildAt(3);
             String buttonText = operatorColumn[i-2];
             button.setText(buttonText);
+            button.setOnClickListener(operatorButtonListener);
         }
 
         TableRow row = (TableRow) tableLayout.getChildAt(6);
@@ -74,12 +94,10 @@ public class CalViewFragment extends Fragment{
 
         Button zeroButton = (Button) row.getChildAt(1);
         zeroButton.setText("0");
+        zeroButton.setOnClickListener(numberButtonListener);
 
         Button equalButton = (Button) row.getChildAt(2);
         equalButton.setText("=");
-
-
-
 
         return v;
 
