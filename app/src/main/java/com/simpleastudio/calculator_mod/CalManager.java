@@ -1,6 +1,8 @@
 package com.simpleastudio.calculator_mod;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -13,6 +15,7 @@ public class CalManager {
     private static final String TAG = "CalManager";
     private String result = "";
     private String formattedResult;
+    private String mLastEquation;
     private Equation mCurrentEquation;
 
     public CalManager(){
@@ -144,6 +147,74 @@ public class CalManager {
         return mCurrentEquation.toString();
     }
 
+    public String equalButtonClicked(){
+        //4 scenarios:
+        //1) before num1Entered
+        //2) after num1Entered + before operEntered
+        //3) after operEntered + before num2Entered
+        //4) after num2Entered
+        String displayText = "Error at EqualButtonClicked()";
+
+        if(mCurrentEquation.isOperEntered() && !mCurrentEquation.isNum2Entered()){
+            mCurrentEquation.setOperator("");
+            mCurrentEquation.setOperEntered(false);
+            displayText = mCurrentEquation.toString();
+
+        }
+        else if(mCurrentEquation.isNum2Entered()){
+            //if(mCurrentEquation.getNum2().indexOf(".") == mCurrentEquation.getNum2().length()){
+            //   String num2NoDp = mCurrentEquation.getNum2().substring(0, (mCurrentEquation.getNum2().length() - 1));
+            //    mCurrentEquation.setNum2(num2NoDp);
+            //}
+            doOperation();
+            displayText = result;
+        }
+        return displayText;
+    }
+
+    public String cancelButClicked(){
+        //4 scenarios:
+        //1) before num1Entered
+        //2) after num1Entered + before operEntered
+        //3) after operEntered + before num2Entered
+        //4) after num2Entered
+        if(!mCurrentEquation.isNum1Entered()){
+            mCurrentEquation = new Equation();          //deletes everything and setDisplay to "0"
+            mLastEquation = "";
+            result = "";
+        }
+        else if(!mCurrentEquation.isOperEntered()){
+            int length = mCurrentEquation.getNum1().length();
+            String newNum1 = mCurrentEquation.getNum1().substring(0, (length-1));
+            mCurrentEquation.setNum1(newNum1);
+
+            if(length-1 == 0){
+                mCurrentEquation.setNum1Entered(false);
+                mCurrentEquation.setNegNum1(false);
+            }
+        }
+        else if(!mCurrentEquation.isNum2Entered()){
+            if(mCurrentEquation.isNegNum2()){
+                mCurrentEquation.setNegNum2(false);
+            }
+            else {
+                mCurrentEquation.setOperator("");
+                mCurrentEquation.setOperEntered(false);
+            }
+        }
+        else if(mCurrentEquation.isNum2Entered()){
+            int length = mCurrentEquation.getNum2().length();
+            String newNum2 = mCurrentEquation.getNum2().substring(0, (length-1));
+            mCurrentEquation.setNum2(newNum2);
+
+            if(length-1 == 0){
+                mCurrentEquation.setNum2("");
+                mCurrentEquation.setNum2Entered(false);
+            }
+        }
+        return mCurrentEquation.toString();
+    }
+
     private String negNumberConvertor(String number, boolean negative){
         String newNumber;
         if(negative)
@@ -152,6 +223,13 @@ public class CalManager {
             newNumber = number;
         return newNumber;
 
+    }
+
+    public String onLongClickClear(){
+        mCurrentEquation = new Equation();
+        mLastEquation = "";
+        result = "";
+        return mCurrentEquation.toString();
     }
 
     public void doOperation(){
@@ -184,7 +262,12 @@ public class CalManager {
         }
         result = resultBd.toPlainString();
 
-        //Should create new currentEquation here
+        //Save current equation String as lastEquation
+        mLastEquation = mCurrentEquation.toString();
         mCurrentEquation = new Equation();
+    }
+
+    public String getmLastEquation() {
+        return mLastEquation;
     }
 }
