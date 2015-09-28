@@ -45,7 +45,6 @@ public class CalViewFragment extends Fragment{
                     public void onClick(View v) {
                         TextView view = (TextView) v;
                         String buttonText = view.getText().toString();
-                        Log.d(TAG, "Number button " + buttonText + " was clicked.");
                         String text = mCalManager.numButtonClicked(buttonText);
                         mCurrentCalTextView.setText(text);
                     }
@@ -57,9 +56,9 @@ public class CalViewFragment extends Fragment{
                     public void onClick(View v) {
                         TextView view = (TextView) v;
                         String buttonText = view.getText().toString();
-                        Log.d(TAG, "Operator button " + buttonText + " was clicked.");
                         String text = mCalManager.operButtonClicked(buttonText);
                         mCurrentCalTextView.setText(text);
+                        mPastCalTextView.setText(mCalManager.getmLastEquation());
                     }
                 };
 
@@ -77,9 +76,8 @@ public class CalViewFragment extends Fragment{
 
         String multiplication = "\u00D7";
         String division = "\u00F7";
-        String clearButtonText = getString(R.string.but_clear);
-        String[] operatorColumn = {"+", "-", multiplication, division, clearButtonText};
-        for(int i = 2; i< tableLayout.getChildCount(); i++){
+        String[] operatorColumn = {"+", "-", multiplication, division};
+        for(int i = 2; i< tableLayout.getChildCount()-1; i++){
             TableRow row = (TableRow) tableLayout.getChildAt(i);
             Button button = (Button) row.getChildAt(3);
             String buttonText = operatorColumn[i-2];
@@ -91,6 +89,13 @@ public class CalViewFragment extends Fragment{
         Button dpButton = (Button) row.getChildAt(0);
         String dp = new DecimalFormatSymbols().getDecimalSeparator() + "";
         dpButton.setText(dp);
+        dpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = mCalManager.dpButtonClicked();
+                mCurrentCalTextView.setText(text);
+            }
+        });
 
         Button zeroButton = (Button) row.getChildAt(1);
         zeroButton.setText("0");
@@ -98,6 +103,33 @@ public class CalViewFragment extends Fragment{
 
         Button equalButton = (Button) row.getChildAt(2);
         equalButton.setText("=");
+        equalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String resultText = mCalManager.equalButtonClicked();
+                mCurrentCalTextView.setText(resultText);
+                mPastCalTextView.setText(mCalManager.getmLastEquation());
+            }
+        });
+
+        Button clearButton = (Button) row.getChildAt(3);
+        clearButton.setText(R.string.but_clear);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = mCalManager.cancelButClicked();
+                mCurrentCalTextView.setText(text);
+                mPastCalTextView.setText(mCalManager.getmLastEquation());
+            }
+        });
+        clearButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mCurrentCalTextView.setText(mCalManager.onLongClickClear());
+                mPastCalTextView.setText(mCalManager.getmLastEquation());
+                return false;
+            }
+        });
 
         return v;
 
