@@ -22,6 +22,9 @@ public class CalViewFragment extends Fragment{
     private TextView mCurrentCalTextView;
     private CalManager mCalManager;
 
+    private Button clearButton;
+    private Button equalButton;
+
     public CalViewFragment(){
 
     }
@@ -43,6 +46,7 @@ public class CalViewFragment extends Fragment{
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        clearButton.setText(R.string.but_clear);
                         TextView view = (TextView) v;
                         String buttonText = view.getText().toString();
                         String text = mCalManager.numButtonClicked(buttonText);
@@ -54,6 +58,7 @@ public class CalViewFragment extends Fragment{
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        clearButton.setText(R.string.but_clear);
                         TextView view = (TextView) v;
                         String buttonText = view.getText().toString();
                         String text = mCalManager.operButtonClicked(buttonText);
@@ -92,6 +97,7 @@ public class CalViewFragment extends Fragment{
         dpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearButton.setText(R.string.but_clear);
                 String text = mCalManager.dpButtonClicked();
                 mCurrentCalTextView.setText(text);
             }
@@ -101,7 +107,7 @@ public class CalViewFragment extends Fragment{
         zeroButton.setText("0");
         zeroButton.setOnClickListener(numberButtonListener);
 
-        Button equalButton = (Button) row.getChildAt(2);
+        equalButton = (Button) row.getChildAt(2);
         equalButton.setText("=");
         equalButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,14 +115,16 @@ public class CalViewFragment extends Fragment{
                 String resultText = mCalManager.equalButtonClicked();
                 mCurrentCalTextView.setText(resultText);
                 mPastCalTextView.setText(mCalManager.getmLastEquation());
+                clearButton.setText(R.string.but_clear_all);
             }
         });
 
-        Button clearButton = (Button) row.getChildAt(3);
+        clearButton = (Button) row.getChildAt(3);
         clearButton.setText(R.string.but_clear);
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearButton.setText(R.string.but_clear);
                 String text = mCalManager.cancelButClicked();
                 mCurrentCalTextView.setText(text);
                 mPastCalTextView.setText(mCalManager.getmLastEquation());
@@ -125,6 +133,7 @@ public class CalViewFragment extends Fragment{
         clearButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                clearButton.setText(R.string.but_clear);
                 mCurrentCalTextView.setText(mCalManager.onLongClickClear());
                 mPastCalTextView.setText(mCalManager.getmLastEquation());
                 return false;
