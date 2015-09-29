@@ -1,0 +1,50 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context=".CalViewActivity"
+    android:stretchColumns="*"
+    android:weightSum="1"
+    android:id="@+id/tableLayout_calview">
+
+    <TextView
+        android:id="@+id/textview_past_equation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:textSize="25sp"
+        android:gravity="bottom|right"
+        android:maxLines="1"
+        android:text="@string/textview_prev_equation"
+        />
+
+    <TextView
+        android:id="@+id/textview_current_equation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"
+        android:textSize="50sp"
+        android:gravity="bottom|right"
+        android:maxLines="1"
+        android:text="@string/textview_edit_equation"
+        />
+
+    <include
+        android:layout_height="48dp"
+        layout="@layout/button_row"/>
+
+    <include
+        android:layout_height="48dp"
+        layout="@layout/button_row"/>
+
+    <include
+        android:layout_height="48dp"
+        layout="@layout/button_row"/>
+
+    <include
+        android:layout_height="48dp"
+        layout="@layout/button_row"/>
+
+    <include
+        android:layout_height="48dp"
+        layout="@layout/button_row"/>
+
+</TableLayout>
