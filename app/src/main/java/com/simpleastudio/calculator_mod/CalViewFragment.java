@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -52,6 +53,7 @@ public class CalViewFragment extends Fragment{
                         String buttonText = view.getText().toString();
                         String text = mCalManager.numButtonClicked(buttonText);
                         mCurrentCalTextView.setText(text);
+                        scrollDisplayToEnd();
                     }
                 };
 
@@ -65,6 +67,7 @@ public class CalViewFragment extends Fragment{
                         String text = mCalManager.operButtonClicked(buttonText);
                         mCurrentCalTextView.setText(text);
                         mPastCalTextView.setText(mCalManager.getmLastEquation());
+                        scrollDisplayToEnd();
                     }
                 };
 
@@ -99,6 +102,7 @@ public class CalViewFragment extends Fragment{
             public void onClick(View v) {
                 String text = mCalManager.negButtonClicked();
                 mCurrentCalTextView.setText(text);
+                scrollDisplayToEnd();
             }
         });
 
@@ -112,6 +116,7 @@ public class CalViewFragment extends Fragment{
                 clearButton.setText(R.string.but_clear);
                 String text = mCalManager.dpButtonClicked();
                 mCurrentCalTextView.setText(text);
+                scrollDisplayToEnd();
             }
         });
 
@@ -128,6 +133,7 @@ public class CalViewFragment extends Fragment{
                 mCurrentCalTextView.setText(resultText);
                 mPastCalTextView.setText(mCalManager.getmLastEquation());
                 clearButton.setText(R.string.but_clear_all);
+                scrollDisplayToEnd();
             }
         });
 
@@ -140,6 +146,7 @@ public class CalViewFragment extends Fragment{
                 String text = mCalManager.cancelButClicked();
                 mCurrentCalTextView.setText(text);
                 mPastCalTextView.setText(mCalManager.getmLastEquation());
+                scrollDisplayToEnd();
             }
         });
         clearButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -153,5 +160,24 @@ public class CalViewFragment extends Fragment{
         });
         return v;
 
+    }
+
+    private void scrollDisplayToEnd(){
+        View v = getView();
+        final HorizontalScrollView currentEquationScrollView = (HorizontalScrollView) v.findViewById(R.id.currentEquationScrollView);
+        currentEquationScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                currentEquationScrollView.fullScroll(View.FOCUS_RIGHT);
+            }
+        });
+
+        final HorizontalScrollView pastEquationScrollView = (HorizontalScrollView) v.findViewById(R.id.pastEquationScrollView);
+        pastEquationScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                pastEquationScrollView.fullScroll(View.FOCUS_RIGHT);
+            }
+        });
     }
 }
