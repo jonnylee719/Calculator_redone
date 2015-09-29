@@ -3,6 +3,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="but_clear">C</string>
+    <string name="but_clear_all">AC</string>
     <string name="textview_edit_equation">Equation Text</string>
     <string name="textview_prev_equation">Temp Previous Equation Text</string>
+    <string name="but_negative">+/-</string>
 </resources>

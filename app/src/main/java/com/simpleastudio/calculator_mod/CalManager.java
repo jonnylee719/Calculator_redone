@@ -119,9 +119,6 @@ public class CalManager {
             }
         }
         else if(!mCurrentEquation.isOperEntered()){                                      //Number is entered
-            //if(num1.indexOf(".") == (num1.length() - 1)){
-            //    num1 = num1.substring(0, (num1.indexOf(".")));     //if dp is at the end of num1
-            //}
             mCurrentEquation.setOperator(operatorText);
             mCurrentEquation.setOperEntered(true);
         }
@@ -129,9 +126,6 @@ public class CalManager {
             if (!mCurrentEquation.isNum2Entered()) {
                 mCurrentEquation.setOperator(operatorText);
             } else {
-                //if (num2.indexOf(".") == (num2.length() - 1)) {
-                //    num2 = num2.substring(0, (num2.indexOf(".")));
-               // }
                 doOperation();
                 if (result.indexOf("-") == 0) {
                     mCurrentEquation.setNegNum1(true);
@@ -155,17 +149,20 @@ public class CalManager {
         //4) after num2Entered
         String displayText = "Error at EqualButtonClicked()";
 
-        if(mCurrentEquation.isOperEntered() && !mCurrentEquation.isNum2Entered()){
+        if(!result.equals("")){
+            displayText = result;
+        }
+        if(mCurrentEquation.isNum1Entered() && !mCurrentEquation.isNum2Entered()){
+            result = negNumberConvertor(mCurrentEquation.getNum1(), mCurrentEquation.isNegNum1());
+            mCurrentEquation.setNum1("");
+            mCurrentEquation.setNegNum1(false);
+            mCurrentEquation.setNum1Entered(false);
             mCurrentEquation.setOperator("");
             mCurrentEquation.setOperEntered(false);
-            displayText = mCurrentEquation.toString();
+            displayText = result;
 
         }
         else if(mCurrentEquation.isNum2Entered()){
-            //if(mCurrentEquation.getNum2().indexOf(".") == mCurrentEquation.getNum2().length()){
-            //   String num2NoDp = mCurrentEquation.getNum2().substring(0, (mCurrentEquation.getNum2().length() - 1));
-            //    mCurrentEquation.setNum2(num2NoDp);
-            //}
             doOperation();
             displayText = result;
         }
@@ -210,6 +207,58 @@ public class CalManager {
             if(length-1 == 0){
                 mCurrentEquation.setNum2("");
                 mCurrentEquation.setNum2Entered(false);
+            }
+        }
+        return mCurrentEquation.toString();
+    }
+
+    public String dpButtonClicked(){
+        if(!mCurrentEquation.isOperEntered()){
+            if(!mCurrentEquation.isNum1Entered()){
+                mCurrentEquation.setNum1("0.");
+                mCurrentEquation.setNum1Entered(true);
+            }
+            else if(mCurrentEquation.isNum1Entered()){
+                if(!mCurrentEquation.getNum1().contains(".")){
+                    String newNum1 = mCurrentEquation.getNum1() + ".";
+                    mCurrentEquation.setNum1(newNum1);
+                }
+            }
+        }
+        else if(mCurrentEquation.isOperEntered()) {
+            if (!mCurrentEquation.isNum2Entered()) {
+                mCurrentEquation.setNum2("0.");
+                mCurrentEquation.setNum2Entered(true);
+            } else if (mCurrentEquation.isNum2Entered()) {
+                if (!mCurrentEquation.getNum2().contains(".")) {
+                    String newNum2 = mCurrentEquation.getNum2() + ".";
+                    mCurrentEquation.setNum2(newNum2);
+                }
+            }
+        }
+        return mCurrentEquation.toString();
+    }
+
+    public String negButtonClicked(){
+        if(!mCurrentEquation.isOperEntered()){
+            if(!mCurrentEquation.isNum1Entered()){
+                mCurrentEquation.setNum1("0");
+                mCurrentEquation.setNum1Entered(true);
+            }
+            if(!mCurrentEquation.isNegNum1()){
+                mCurrentEquation.setNegNum1(true);
+            }
+            else{
+                mCurrentEquation.setNegNum1(false);
+            }
+            result = ""; //this might be straight after last operation
+        }
+        else if(mCurrentEquation.isOperEntered()){
+            if(!mCurrentEquation.isNegNum2()){
+                mCurrentEquation.setNegNum2(true);
+            }
+            else{
+                mCurrentEquation.setNegNum2(false);
             }
         }
         return mCurrentEquation.toString();

@@ -24,6 +24,7 @@ public class CalViewFragment extends Fragment{
 
     private Button clearButton;
     private Button equalButton;
+    private Button negativeButton;
 
     public CalViewFragment(){
 
@@ -90,6 +91,17 @@ public class CalViewFragment extends Fragment{
             button.setOnClickListener(operatorButtonListener);
         }
 
+        TableRow row1 = (TableRow) tableLayout.getChildAt(2);
+        negativeButton = (Button) row1.getChildAt(2);
+        negativeButton.setText(R.string.but_negative);
+        negativeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = mCalManager.negButtonClicked();
+                mCurrentCalTextView.setText(text);
+            }
+        });
+
         TableRow row = (TableRow) tableLayout.getChildAt(6);
         Button dpButton = (Button) row.getChildAt(0);
         String dp = new DecimalFormatSymbols().getDecimalSeparator() + "";
@@ -139,7 +151,6 @@ public class CalViewFragment extends Fragment{
                 return false;
             }
         });
-
         return v;
 
     }
