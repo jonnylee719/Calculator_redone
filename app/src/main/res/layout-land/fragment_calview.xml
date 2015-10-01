@@ -2,33 +2,39 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context=".CalViewActivity"
     android:stretchColumns="*"
-    android:weightSum="1"
     android:id="@+id/tableLayout_calview">
 
-    <HorizontalScrollView
-        android:id="@+id/pastEquationScrollView"
-        android:layout_width="match_parent"
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:weightSum = "1"
-        android:fillViewport="true"
-        android:scrollbars="none">
+        android:layout_width="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textview_past_equation"
-            android:layout_width="wrap_content"
+        <HorizontalScrollView
+            android:id="@+id/pastEquationScrollView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:gravity="bottom|end"
-            android:layout_gravity="bottom|end"
-            android:maxLines="1"
-            android:paddingRight="4dp"
-            android:paddingLeft="4dp"
-            android:paddingBottom="4dp"
-            android:text="@string/textview_prev_equation"
-            />
+            android:layout_weight="5"
+            android:weightSum = "1"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <TextView
+                android:id="@+id/textview_past_equation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:textSize="25sp"
+                android:gravity="bottom|end"
+                android:maxLines="1"
+                android:paddingRight="4dp"
+                android:paddingLeft="4dp"
+                android:text="@string/textview_prev_equation"
+                />
 
         </HorizontalScrollView>
+
+
+    </LinearLayout>
 
     <HorizontalScrollView
         android:id="@+id/currentEquationScrollView"
@@ -55,27 +61,27 @@
 
     <include
         android:layout_height="48dp"
-        android:layout_weight="0.1"
+        android:layout_weight="1"
         layout="@layout/button_row"/>
 
     <include
         android:layout_height="48dp"
-        android:layout_weight="0.1"
+        android:layout_weight="1"
         layout="@layout/button_row"/>
 
     <include
         android:layout_height="48dp"
-        android:layout_weight="0.1"
+        android:layout_weight="1"
         layout="@layout/button_row"/>
 
     <include
         android:layout_height="48dp"
-        android:layout_weight="0.1"
+        android:layout_weight="1"
         layout="@layout/button_row"/>
 
     <include
         android:layout_height="48dp"
-        android:layout_weight="0.1"
+        android:layout_weight="1"
         layout="@layout/button_row"/>
 
 </TableLayout>
