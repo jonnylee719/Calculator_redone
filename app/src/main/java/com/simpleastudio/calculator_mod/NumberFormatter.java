@@ -28,6 +28,8 @@ public class NumberFormatter implements Serializable {
     }
 
     public String formatNumber(String inputNumber){
+        String formattedWhole = "";
+        String formattedFraction = "";
         String displayNumber = "something has gone wrong";
         if(conditionZero(inputNumber)){
             return inputNumber;
@@ -49,14 +51,15 @@ public class NumberFormatter implements Serializable {
             displayNumber = exponentialFormat(inputNumber);
         }
         else{
-            String formattedWhole = formatWhole(whole);
-            String formattedFraction = formatFraction(fraction);
+            formattedWhole = formatWhole(whole);
+            formattedFraction = formatFraction(fraction);
             if(formattedFraction.equals("")){
                 displayNumber = formattedWhole;
             }
             else if(formattedFraction.equals("roundTo1")){
                 String newInputNumber = (Long.parseLong(whole) + 1) + "";
-                formatNumber(newInputNumber);
+                Log.d(TAG, "newInputNumber after rounding up: " + newInputNumber);
+                displayNumber = formatNumber(newInputNumber);
             }
             else{
                 displayNumber = formattedWhole + dp + formattedFraction;
@@ -95,15 +98,18 @@ public class NumberFormatter implements Serializable {
         String roundedFraction;
         int length = fraction.length();
         if(length>10){
-            int ninthDecimal = Integer.parseInt(fraction.substring(0,8));
+            int ninthDecimal = Integer.parseInt(fraction.substring(0,9));
+            Log.d(TAG, "ninthDecimal: " + ninthDecimal);
             int tenthPlace = Integer.parseInt(String.valueOf(fraction.charAt(9)));
             if(tenthPlace >= 5){        //round up
-                ninthDecimal++;
+                ninthDecimal = ninthDecimal + 1;
             }
-            if(ninthDecimal > 999999999){       //fraction round up to 1.0
+            if(ninthDecimal>999999999){       //fraction round up to 1.0
                 roundedFraction = "roundTo1";
             }
-            roundedFraction = String.valueOf(ninthDecimal);
+            else {                              //fraction doesnt need to be rounded up
+                roundedFraction = String.valueOf(ninthDecimal);
+            }
         }
         else {
             roundedFraction = fraction;
