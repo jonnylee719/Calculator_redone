@@ -97,14 +97,15 @@ public class NumberFormatter implements Serializable {
     private String roundFraction(String fraction){
         String roundedFraction;
         int length = fraction.length();
-        if(length>10){
-            int ninthDecimal = Integer.parseInt(fraction.substring(0,9));
+        if(length>10){              //Need to round the fraction
+            String ninthDecimal = fraction.substring(0,9);
+            Double ninthPlace = Double.parseDouble(ninthDecimal);
             Log.d(TAG, "ninthDecimal: " + ninthDecimal);
             int tenthPlace = Integer.parseInt(String.valueOf(fraction.charAt(9)));
             if(tenthPlace >= 5){        //round up
-                ninthDecimal = ninthDecimal + 1;
+                ninthPlace = ninthPlace + 0.000000001;
             }
-            if(ninthDecimal>999999999){       //fraction round up to 1.0
+            if(ninthPlace == 1){       //fraction round up to 1.0
                 roundedFraction = "roundTo1";
             }
             else {                              //fraction doesnt need to be rounded up
