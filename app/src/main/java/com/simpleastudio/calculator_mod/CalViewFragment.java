@@ -38,7 +38,7 @@ public class CalViewFragment extends Fragment{
             mCalManager = (CalManager) savedInstanceState.getSerializable(ARGS_CALMANAGER);
         }
         else {
-            mCalManager = new CalManager();
+            mCalManager = new CalManager(getContext());
         }
     }
 

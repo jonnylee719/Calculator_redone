@@ -17,12 +17,14 @@ import java.text.NumberFormat;
  */
 public class CalManager implements Serializable{
     private static final String TAG = "CalManager";
+    private Context mAppContext;
     private String result = "";
     private String mLastEquation = "";
     private Equation mCurrentEquation;
     private NumberFormatter nf = new NumberFormatter();
 
-    public CalManager(){
+    public CalManager(Context context){
+        mAppContext = context;
         mCurrentEquation = new Equation();
     }
 
@@ -349,6 +351,7 @@ public class CalManager implements Serializable{
 
         //Save current equation String as lastEquation
         mLastEquation = mCurrentEquationToString();
+        CalHistory.get(mAppContext).addEquation(mCurrentEquation);
         mCurrentEquation = new Equation();
     }
 
