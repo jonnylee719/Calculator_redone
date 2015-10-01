@@ -36,6 +36,7 @@
 
     </LinearLayout>
 
+
     <HorizontalScrollView
         android:id="@+id/currentEquationScrollView"
         android:layout_width="match_parent"

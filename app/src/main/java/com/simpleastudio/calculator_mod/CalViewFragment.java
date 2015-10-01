@@ -2,7 +2,6 @@ package com.simpleastudio.calculator_mod;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ public class CalViewFragment extends Fragment{
     private TextView mPastCalTextView;
     private TextView mCurrentCalTextView;
     private CalManager mCalManager;
+    private final static String ARGS_CALMANAGER = "calManager";
 
     private Button clearButton;
     private Button equalButton;
@@ -34,7 +34,18 @@ public class CalViewFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        mCalManager = new CalManager();
+        if(savedInstanceState!=null){
+            mCalManager = (CalManager) savedInstanceState.getSerializable(ARGS_CALMANAGER);
+        }
+        else {
+            mCalManager = new CalManager();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable(ARGS_CALMANAGER, mCalManager);
     }
 
     @Override
@@ -42,7 +53,9 @@ public class CalViewFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_calview, container, false);
 
         mPastCalTextView = (TextView)v.findViewById(R.id.textview_past_equation);
+        mPastCalTextView.setText(mCalManager.getmLastEquation());
         mCurrentCalTextView = (TextView)v.findViewById(R.id.textview_current_equation);
+        mCurrentCalTextView.setText(mCalManager.getmCurrentEquationDisplay());
 
         View.OnClickListener numberButtonListener =
                 new View.OnClickListener() {

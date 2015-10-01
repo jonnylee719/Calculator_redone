@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.TableRow;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Jonathan on 29/9/2015.
  */
-public class NumberFormatter {
+public class NumberFormatter implements Serializable {
     private static final String TAG = "NumberFormatter";
     private NumberFormat nf;
     private Locale currentLocale;

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -14,16 +15,32 @@ import java.text.NumberFormat;
 /**
  * Created by Jonathan on 26/9/2015.
  */
-public class CalManager {
+public class CalManager implements Serializable{
     private static final String TAG = "CalManager";
     private String result = "";
-    private String formattedResult;
-    private String mLastEquation;
+    private String mLastEquation = "";
     private Equation mCurrentEquation;
     private NumberFormatter nf = new NumberFormatter();
 
     public CalManager(){
         mCurrentEquation = new Equation();
+    }
+
+    public String mCurrentEquationToString() {
+        return nf.formatNumber(mCurrentEquation.getFormattedNum1())
+                + mCurrentEquation.getOperator()
+                + nf.formatNumber(mCurrentEquation.getFormattedNum2());
+    }
+
+    public String getmCurrentEquationDisplay(){
+        String currentDisplay;
+        if(!result.equals("")){
+            currentDisplay = nf.formatNumber(result);
+        }
+        else{
+            currentDisplay = mCurrentEquationToString();
+        }
+        return currentDisplay;
     }
 
     public String numButtonClicked(String number) {
@@ -92,9 +109,7 @@ public class CalManager {
                 }
             }
         }
-        return nf.formatNumber(mCurrentEquation.getFormattedNum1())
-                + mCurrentEquation.getOperator()
-                + nf.formatNumber(mCurrentEquation.getFormattedNum2());
+        return mCurrentEquationToString();
     }
 
     public String operButtonClicked(String operatorText) {
@@ -144,9 +159,7 @@ public class CalManager {
                 operButtonClicked(operatorText);       //reloop as if this is a new operButClicked
             }
         }
-        return nf.formatNumber(mCurrentEquation.getFormattedNum1())
-                + mCurrentEquation.getOperator()
-                + nf.formatNumber(mCurrentEquation.getFormattedNum2());
+        return mCurrentEquationToString();
     }
 
     public String equalButtonClicked(){
@@ -231,9 +244,7 @@ public class CalManager {
                 mCurrentEquation.setNum2Entered(false);
             }
         }
-        return nf.formatNumber(mCurrentEquation.getFormattedNum1())
-                + mCurrentEquation.getOperator()
-                + nf.formatNumber(mCurrentEquation.getFormattedNum2());
+        return mCurrentEquationToString();
     }
 
     public String dpButtonClicked(){
@@ -260,9 +271,7 @@ public class CalManager {
                 }
             }
         }
-        return nf.formatNumber(mCurrentEquation.getFormattedNum1())
-                + mCurrentEquation.getOperator()
-                + nf.formatNumber(mCurrentEquation.getFormattedNum2());
+        return mCurrentEquationToString();
     }
 
     public String negButtonClicked(){
@@ -287,9 +296,7 @@ public class CalManager {
                 mCurrentEquation.setNegNum2(false);
             }
         }
-        return nf.formatNumber(mCurrentEquation.getFormattedNum1())
-                + mCurrentEquation.getOperator()
-                + nf.formatNumber(mCurrentEquation.getFormattedNum2());
+        return mCurrentEquationToString();
     }
 
     private String negNumberConvertor(String number, boolean negative){
@@ -341,9 +348,7 @@ public class CalManager {
         result = resultBd.stripTrailingZeros().toPlainString();
 
         //Save current equation String as lastEquation
-        mLastEquation = nf.formatNumber(mCurrentEquation.getFormattedNum1())
-                + mCurrentEquation.getOperator()
-                + nf.formatNumber(mCurrentEquation.getFormattedNum2());;
+        mLastEquation = mCurrentEquationToString();
         mCurrentEquation = new Equation();
     }
 
