@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Equation implements Serializable{
     //Variables for equation data
-    private String num1 = "";
+    private String num1 = "0";
     private boolean negNum1 = false;
     private String formattedNum1;
 
@@ -90,13 +90,7 @@ public class Equation implements Serializable{
     }
     
     public String toString(){
-        String equationString;
-        if(!num1Entered){
-            equationString = "0";
-        }
-        else{
-            equationString = negNumberConvertor(num1, negNum1) + operator + negNumberConvertor(num2, negNum2);
-        }
+        String equationString = negNumberConvertor(num1, negNum1) + operator + negNumberConvertor(num2, negNum2);
         return equationString;
     }
 
@@ -109,4 +103,13 @@ public class Equation implements Serializable{
         return newNumber;
 
     }
+
+    public String getFormattedNum1(){
+        return negNumberConvertor(num1, negNum1);
+    }
+
+    public String getFormattedNum2(){
+        return negNumberConvertor(num2, negNum2);
+    }
+
 }
