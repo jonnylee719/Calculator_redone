@@ -124,14 +124,15 @@ public class CalViewFragment extends Fragment{
                 };
 
         TableLayout tableLayout = (TableLayout) v.findViewById(R.id.tableLayout_calview);
-        int numberPad = 9;
+        String numberString = "789456123";
+        int counter = 0;
         for(int i = 3; i< tableLayout.getChildCount()-1; i++){
             TableRow row = (TableRow) tableLayout.getChildAt(i);
             for(int j = 0; j < row.getChildCount()-1; j++){
                 Button button = (Button) row.getChildAt(j);
-                button.setText(numberPad+"");
+                button.setText(numberString.charAt(counter) + "");
                 button.setOnClickListener(numberButtonListener);
-                numberPad--;
+                counter++;
             }
         }
 
