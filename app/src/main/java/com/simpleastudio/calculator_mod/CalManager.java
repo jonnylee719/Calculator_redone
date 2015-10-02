@@ -11,6 +11,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Created by Jonathan on 26/9/2015.
@@ -28,7 +29,15 @@ public class CalManager implements Serializable{
         mCurrentEquation = new Equation();
     }
 
-    public String mCurrentEquationToString() {
+    public void resetToNewEquation(Equation e){
+        Log.d(TAG, "CurrentEquation is set to: " + e.toString());
+        mCurrentEquation = e;
+        result = "";
+        mLastEquation = "";
+    }
+
+    private String mCurrentEquationToString() {
+        Log.d(TAG, "CurrentEquation: " + mCurrentEquation.toString());
         return nf.formatNumber(mCurrentEquation.getFormattedNum1())
                 + mCurrentEquation.getOperator()
                 + nf.formatNumber(mCurrentEquation.getFormattedNum2());
@@ -59,7 +68,7 @@ public class CalManager implements Serializable{
                 if (mCurrentEquation.getNum1().equals("0")) {
                     mCurrentEquation.setNum1(number);
                 } else {
-                    if(mCurrentEquation.getNum1().indexOf(".") != -1){
+                    if(mCurrentEquation.getNum1().contains(".")){
                         int dp = mCurrentEquation.getNum1().indexOf(".");                 //the position of the decimal point
                         String fractionPart = mCurrentEquation.getNum1().substring(dp);
                         if(fractionPart.length() > 9){             //10 digits after the decimal point is the limit of num1
@@ -70,10 +79,7 @@ public class CalManager implements Serializable{
                         }
                     }
                     else {                                          // not a fraction number
-                        if(mCurrentEquation.getNum1().length()>9){
-                            //do Nothing
-                        }
-                        else {
+                        if(mCurrentEquation.getNum1().length()<10){
                             mCurrentEquation.setNum1(mCurrentEquation.getNum1() + number);
                         }
                     }
@@ -90,7 +96,7 @@ public class CalManager implements Serializable{
                     mCurrentEquation.setNum2(number);
                 }
                 else{
-                    if(mCurrentEquation.getNum2().indexOf(".") != -1){
+                    if(mCurrentEquation.getNum2().contains(".")){
                         int dp = mCurrentEquation.getNum2().indexOf(".");                 //the position of the decimal point
                         String fractionPart = mCurrentEquation.getNum2().substring(dp);
                         if(fractionPart.length() > 9){             //10 digits after the decimal point is the limit of num
@@ -348,6 +354,7 @@ public class CalManager implements Serializable{
         }
         Log.d(TAG, "resultBD is: " + resultBd);
         result = resultBd.stripTrailingZeros().toPlainString();
+        mCurrentEquation.setResult(result);
 
         //Save current equation String as lastEquation
         mLastEquation = mCurrentEquationToString();
@@ -357,5 +364,9 @@ public class CalManager implements Serializable{
 
     public String getmLastEquation() {
         return mLastEquation;
+    }
+
+    public void saveEquations(){
+        CalHistory.get(mAppContext).saveEquations();
     }
 }

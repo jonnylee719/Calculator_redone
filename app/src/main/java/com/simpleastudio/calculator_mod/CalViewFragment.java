@@ -210,6 +210,12 @@ public class CalViewFragment extends Fragment{
 
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        mCalManager.saveEquations();
+    }
+
     private void scrollDisplayToEnd(){
         View v = getView();
         final HorizontalScrollView currentEquationScrollView = (HorizontalScrollView) v.findViewById(R.id.currentEquationScrollView);
@@ -228,4 +234,6 @@ public class CalViewFragment extends Fragment{
             }
         });
     }
+
+
 }

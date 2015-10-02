@@ -7,4 +7,6 @@
     <string name="textview_edit_equation">Equation Text</string>
     <string name="textview_prev_equation">Temp Previous Equation Text</string>
     <string name="but_negative">+/-</string>
+    <string name="clear_history">Clear History</string>
+    <string name="back">Back</string>
 </resources>

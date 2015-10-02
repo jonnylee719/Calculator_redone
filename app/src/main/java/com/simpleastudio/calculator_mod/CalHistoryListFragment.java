@@ -90,6 +90,13 @@ public class CalHistoryListFragment extends ListFragment {
                         .inflate(R.layout.equation_item_info, null);
             }
 
+            if(position % 2 == 0){
+                convertView.setBackgroundResource(android.R.drawable.divider_horizontal_dim_dark);
+            }
+            else{
+                convertView.setBackgroundResource(android.R.drawable.screen_background_light_transparent);
+            }
+
             Equation e = getItem(position);
 
             TextView textViewNum1 = (TextView) convertView.findViewById(R.id.textview_num1);
