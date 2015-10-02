@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingRight="5dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:id="@+id/equation_frame"
+        >
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/textview_num1"
+            android:textSize="30sp"
+            android:text="123789"
+            android:layout_gravity="end"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textview_num2"
+            android:textSize="30sp"
+            android:layout_gravity="end"
+            android:text="21912"
+            />
+
+        <View
+            android:id="@+id/calHisList_equation_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/background_dark"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textview_result"
+            android:text="13739712921"
+            android:textSize="30sp"
+            android:layout_gravity="end" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textview_operator"
+        android:textSize="30sp"
+        android:text="+"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/equation_frame"
+        android:layout_toStartOf="@id/equation_frame" />
+
+</RelativeLayout>
