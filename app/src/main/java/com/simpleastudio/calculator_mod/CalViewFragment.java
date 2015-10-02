@@ -1,7 +1,10 @@
 package com.simpleastudio.calculator_mod;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,8 @@ public class CalViewFragment extends Fragment{
     private TextView mCurrentCalTextView;
     private CalManager mCalManager;
     private final static String ARGS_CALMANAGER = "calManager";
+    public final static int REQUEST_CODE = 1;
+    private final static String ARGS_EQUATION = "equation";
 
     private Button clearButton;
     private Button equalButton;
@@ -32,30 +37,60 @@ public class CalViewFragment extends Fragment{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null){
-            mCalManager = (CalManager) savedInstanceState.getSerializable(ARGS_CALMANAGER);
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.d(TAG, "onActivityResult");
+        if(requestCode == REQUEST_CODE){
+            if(resultCode == Activity.RESULT_OK){
+                Log.d(TAG, "Retrieved equation sent from calHistoryListFragment.");
+                Equation retrievedEquation = (Equation) data.getSerializableExtra(CalHistoryListFragment.EXTRA_RETRIEVED_EQUATION);
+                setRetrievedEquation(retrievedEquation);
+            }
+            else if(resultCode == Activity.RESULT_CANCELED){
+                Log.d(TAG, "No retrieved equation from CalHistoryListFragment.");
+            }
         }
-        else {
-            mCalManager = new CalManager(getContext());
-        }
+
+    }
+
+    public void setRetrievedEquation(Equation e){
+        mCalManager.resetToNewEquation(e);
+        updateUI();
+    }
+
+    public void updateUI(){
+        Log.d(TAG, "updateUI");
+        mPastCalTextView.setText(mCalManager.getmLastEquation());
+        mCurrentCalTextView.setText(mCalManager.getmCurrentEquationDisplay());
+        resetClearButtonText();
+    }
+
+    private void resetClearButtonText(){
+        clearButton.setText(R.string.but_clear);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putSerializable(ARGS_CALMANAGER, mCalManager);
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        mCalManager = new CalManager(getContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        Log.d(TAG, "onCreateView");
         View v = inflater.inflate(R.layout.fragment_calview, container, false);
 
         mPastCalTextView = (TextView)v.findViewById(R.id.textview_past_equation);
         mPastCalTextView.setText(mCalManager.getmLastEquation());
+        mPastCalTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), CalHistoryActivity.class);
+                startActivityForResult(i, REQUEST_CODE);
+            }
+        });
         mCurrentCalTextView = (TextView)v.findViewById(R.id.textview_current_equation);
         mCurrentCalTextView.setText(mCalManager.getmCurrentEquationDisplay());
+
 
         View.OnClickListener numberButtonListener =
                 new View.OnClickListener() {
