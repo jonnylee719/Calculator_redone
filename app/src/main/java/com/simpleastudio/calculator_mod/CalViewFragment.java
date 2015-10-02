@@ -1,7 +1,9 @@
 package com.simpleastudio.calculator_mod;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
@@ -16,6 +18,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.text.DecimalFormatSymbols;
 
 /**
@@ -33,6 +38,8 @@ public class CalViewFragment extends Fragment{
     private Button clearButton;
     private Button equalButton;
     private Button negativeButton;
+
+    private static final String CURRENT_EQUATION = "currentEquation";
 
     public CalViewFragment(){
 
@@ -80,6 +87,7 @@ public class CalViewFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         Log.d(TAG, "onCreateView");
+        mCalManager.loadCurrentEquation();
         View v = inflater.inflate(R.layout.fragment_calview, container, false);
 
         mPastCalTextView = (TextView)v.findViewById(R.id.textview_past_equation);
@@ -219,6 +227,12 @@ public class CalViewFragment extends Fragment{
     public void onPause(){
         super.onPause();
         mCalManager.saveEquations();
+        mCalManager.saveCurrentEquation();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
     }
 
     private void scrollDisplayToEnd(){

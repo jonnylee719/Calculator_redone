@@ -23,10 +23,42 @@ public class CalManager implements Serializable{
     private String mLastEquation = "";
     private Equation mCurrentEquation;
     private NumberFormatter nf = new NumberFormatter();
+    private CalculatorJSONSerializer mSerializer;
+    private final static String FILENAME_CURRENT_EQUATION = "currentEquation.json";
+
+
+    public void saveCurrentEquation(){
+        try{
+            mSerializer.saveCurrentEquation(mCurrentEquation, FILENAME_CURRENT_EQUATION);
+            Log.d(TAG, "Saved current equation to file.");
+        }catch (Exception e){
+            Log.e(TAG, "Error in saving current equation." + e);
+        }
+    }
+
+    public void loadCurrentEquation(){
+        try{
+            Equation equation = mSerializer.getSavedCurrentEquation(FILENAME_CURRENT_EQUATION);
+            mCurrentEquation = equation;
+            Log.d(TAG, "Loaded current equation from file.");
+        }catch (Exception e){
+            Log.e(TAG, "Error in loading current equation." + e);
+        }
+    }
+
+    public Equation getmCurrentEquation() {
+        return mCurrentEquation;
+    }
+
+    public void setmCurrentEquation(Equation mCurrentEquation) {
+        this.mCurrentEquation = mCurrentEquation;
+    }
+
 
     public CalManager(Context context){
         mAppContext = context;
         mCurrentEquation = new Equation();
+        mSerializer = new CalculatorJSONSerializer(mAppContext);
     }
 
     public void resetToNewEquation(Equation e){
