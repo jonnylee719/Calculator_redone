@@ -63,6 +63,7 @@ public class CalViewFragment extends Fragment{
         Log.d(TAG, "updateUI");
         mPastCalTextView.setText(mCalManager.getmLastEquation());
         mCurrentCalTextView.setText(mCalManager.getmCurrentEquationDisplay());
+        scrollDisplayToEnd();
         resetClearButtonText();
     }
 
