@@ -9,4 +9,5 @@
     <string name="but_negative">+/-</string>
     <string name="clear_history">Clear History</string>
     <string name="back">Back</string>
+    <string name="hint_history">[]</string>
 </resources>
