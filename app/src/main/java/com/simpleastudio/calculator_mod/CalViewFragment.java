@@ -39,7 +39,8 @@ public class CalViewFragment extends Fragment{
     private Button equalButton;
     private Button negativeButton;
 
-    private static final String CURRENT_EQUATION = "currentEquation";
+    private static final String LAST_EQUATION = "lastEquation";
+    private static final String RESULT = "result";
 
     public CalViewFragment(){
 
@@ -79,9 +80,20 @@ public class CalViewFragment extends Fragment{
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString(LAST_EQUATION, mCalManager.getmLastEquation());
+        savedInstanceState.putString(RESULT, mCalManager.getResult());
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mCalManager = new CalManager(getContext());
+        if(savedInstanceState!= null){
+            mCalManager.setmLastEquation(savedInstanceState.getString(LAST_EQUATION));
+            mCalManager.setResult(savedInstanceState.getString(RESULT));
+        }
     }
 
     @Override
@@ -102,7 +114,7 @@ public class CalViewFragment extends Fragment{
         });
         mCurrentCalTextView = (TextView)v.findViewById(R.id.textview_current_equation);
         mCurrentCalTextView.setText(mCalManager.getmCurrentEquationDisplay());
-
+        scrollDisplayToEnd();
 
         View.OnClickListener numberButtonListener =
                 new View.OnClickListener() {
