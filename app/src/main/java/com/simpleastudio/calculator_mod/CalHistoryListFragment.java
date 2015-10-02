@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 /**
@@ -18,6 +21,7 @@ import java.util.ArrayList;
  */
 public class CalHistoryListFragment extends ListFragment {
     private static final String TAG = "CalHistoryListFragment";
+    public static final String EXTRA_RETRIEVED_EQUATION = "com.simpleastudio.CalHistoryListFragment.retrieved_equation";
     private ArrayList<Equation> mEquations;
     private EquationAdapter mAdapter;
     private Button mClearHistoryButton;
@@ -62,7 +66,18 @@ public class CalHistoryListFragment extends ListFragment {
         return v;
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+        Log.d(TAG, "List item is clicked.");
+        Equation e = ((EquationAdapter)getListAdapter()).getItem(position);
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(EXTRA_RETRIEVED_EQUATION, e);
+        getActivity().setResult(Activity.RESULT_OK, returnIntent);
+        getActivity().finish();
+    }
+
     private class EquationAdapter extends ArrayAdapter<Equation>{
+        private NumberFormatter nf = new NumberFormatter();
 
         public EquationAdapter(ArrayList<Equation> equations) {
             super(getActivity(), 0, equations);
@@ -77,8 +92,15 @@ public class CalHistoryListFragment extends ListFragment {
 
             Equation e = getItem(position);
 
-            TextView equationTextView = (TextView) convertView.findViewById(R.id.textview_equation);
-            equationTextView.setText(e.toString());
+            TextView textViewNum1 = (TextView) convertView.findViewById(R.id.textview_num1);
+            TextView textViewNum2 = (TextView) convertView.findViewById(R.id.textview_num2);
+            TextView textViewResult = (TextView) convertView.findViewById(R.id.textview_result);
+            TextView textViewOperator = (TextView) convertView.findViewById(R.id.textview_operator);
+
+            textViewNum1.setText(nf.formatNumber(e.getFormattedNum1()));
+            textViewNum2.setText(nf.formatNumber(e.getFormattedNum2()));
+            textViewResult.setText(nf.formatNumber(e.getResult()));
+            textViewOperator.setText(e.getOperator());
 
             return convertView;
         }
