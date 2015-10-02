@@ -31,9 +31,7 @@ public class CalViewFragment extends Fragment{
     private TextView mPastCalTextView;
     private TextView mCurrentCalTextView;
     private CalManager mCalManager;
-    private final static String ARGS_CALMANAGER = "calManager";
     public final static int REQUEST_CODE = 1;
-    private final static String ARGS_EQUATION = "equation";
 
     private Button clearButton;
     private Button equalButton;
@@ -41,6 +39,8 @@ public class CalViewFragment extends Fragment{
 
     private static final String LAST_EQUATION = "lastEquation";
     private static final String RESULT = "result";
+    private HorizontalScrollView currentEquationScrollView;
+    private HorizontalScrollView pastEquationScrollView;
 
     public CalViewFragment(){
 
@@ -101,6 +101,9 @@ public class CalViewFragment extends Fragment{
         Log.d(TAG, "onCreateView");
         mCalManager.loadCurrentEquation();
         View v = inflater.inflate(R.layout.fragment_calview, container, false);
+
+        currentEquationScrollView = (HorizontalScrollView) v.findViewById(R.id.currentEquationScrollView);
+        pastEquationScrollView = (HorizontalScrollView) v.findViewById(R.id.pastEquationScrollView);
 
         mPastCalTextView = (TextView)v.findViewById(R.id.textview_past_equation);
         mPastCalTextView.setText(mCalManager.getmLastEquation());
@@ -248,8 +251,6 @@ public class CalViewFragment extends Fragment{
     }
 
     private void scrollDisplayToEnd(){
-        View v = getView();
-        final HorizontalScrollView currentEquationScrollView = (HorizontalScrollView) v.findViewById(R.id.currentEquationScrollView);
         currentEquationScrollView.post(new Runnable() {
             @Override
             public void run() {
@@ -257,7 +258,6 @@ public class CalViewFragment extends Fragment{
             }
         });
 
-        final HorizontalScrollView pastEquationScrollView = (HorizontalScrollView) v.findViewById(R.id.pastEquationScrollView);
         pastEquationScrollView.post(new Runnable() {
             @Override
             public void run() {

@@ -26,6 +26,13 @@ public class CalManager implements Serializable{
     private CalculatorJSONSerializer mSerializer;
     private final static String FILENAME_CURRENT_EQUATION = "currentEquation.json";
 
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
 
     public void saveCurrentEquation(){
         try{
@@ -46,12 +53,8 @@ public class CalManager implements Serializable{
         }
     }
 
-    public Equation getmCurrentEquation() {
-        return mCurrentEquation;
-    }
-
-    public void setmCurrentEquation(Equation mCurrentEquation) {
-        this.mCurrentEquation = mCurrentEquation;
+    public void setmLastEquation(String equation) {
+        mLastEquation = equation;
     }
 
 
