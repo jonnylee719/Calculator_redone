@@ -1,5 +1,5 @@
 # Calculator
-This is an open source android Calculator app that I have developed. 
+This is an open source android Calculator app. 
 
 Currently it still has a few bugs:
 - Have yet to account for division by zero leading to Arithmetic Exception at CalManager
